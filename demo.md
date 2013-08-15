@@ -78,7 +78,7 @@ color: white
 </tr>
 <tr>
 <th>House of Leaves</th>
-<td>Mark z. Danielewski</td>
+<td>Mark Z. Danielewski</td>
 <td>5/5</td>
 </tr>
 </table>
