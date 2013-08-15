@@ -7,10 +7,10 @@ Presentify is a Python program that reads Markdown files and produces completely
 Install
 =======
 
-1. Download `presentify.py`
-2. `pip install markdown`
-3. `chmod +x presentify.py`
-4. `./presentify.py input.md output.html`
+    curl https://raw.github.com/tdeitch/presentify/master/presentify.py
+    pip install markdown
+    chmod +x presentify.py
+    ./presentify.py input.md output.html
 
 Markdown file format
 ====================
