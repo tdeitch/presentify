@@ -53,19 +53,27 @@ def generateSlideHTML(slides):
             slide, style = setSlideBackground(slide, style)
         if "color" in slide:
             slide, style = setSlideTextColor(slide, style)
-        slide["html"] = "\n<section class=\"slide " + slide.get("class", "") + "\"><div>\n" + markdown.markdown(slide.get("text", "")) + style + "\n</div></section>"
+        slide["html"] = "\n<section class=\"slide " + slide.get("class", "") +
+            "\"><div>\n" + markdown.markdown(slide.get("text", "")) + style +
+            "\n</div></section>"
     return slides
 
 def setSlideTextColor(slide, style):
     if isWebColor(slide["color"]):
-        style += "\n<style>.color" + slide["color"] + ">div>h1,.color" + slide["color"] + ">div>h2,.color" + slide["color"] + ">div>h3,.color" + slide["color"] + ">div>h4,.color" + slide["color"] + ">div>h5,.color" + slide["color"] + ">div>h6,.color" + slide["color"] + ">div{color: " + slide["color"] + ";}</style>"
+        style += "\n<style>.color" + slide["color"] + ">div>h1,.color" +
+            slide["color"] + ">div>h2,.color" + slide["color"] +
+            ">div>h3,.color" + slide["color"] + ">div>h4,.color" +
+            slide["color"] + ">div>h5,.color" + slide["color"] +
+            ">div>h6,.color" + slide["color"] + ">div{color: " +
+            slide["color"] + ";}</style>"
         slide["class"] = slide.get("class", "") + " color" + slide["color"]
     return (slide, style)
 
 def setSlideBackground(slide, style):
     # Web colors
     if isWebColor(slide["bg"]):
-        style += "\n<style>.bg" + slide["bg"] + "{background-color: " + slide["bg"] + ";}</style>"
+        style += "\n<style>.bg" + slide["bg"] + "{background-color: " + slide["bg"]
+            + ";}</style>"
         slide["class"] = slide.get("class", "") + " bg" + slide["bg"]
     # Local images
     elif os.path.exists(slide["bg"]):
@@ -75,21 +83,25 @@ def setSlideBackground(slide, style):
                 imgbin = f.read()
             base64img = base64.b64encode(imgbin).decode("utf-8")
             slide["class"] = slide.get("class", "") + " cover"
-            style += "\n<img src=\"data:image/png;base64," + base64img + "\" alt=\"\">"
+            style += "\n<img src=\"data:image/png;base64," + base64img +
+                "\" alt=\"\">"
         # Local jpg files
-        elif (slide["bg"].lower().endswith(".jpg") or slide["bg"].lower().endswith(".jpeg")):
+        elif (slide["bg"].lower().endswith(".jpg") or
+            slide["bg"].lower().endswith(".jpeg")):
             with open(slide["bg"], 'rb') as f:
                 imgbin = f.read()
             base64img = base64.b64encode(imgbin).decode("utf-8")
             slide["class"] = slide.get("class", "") + " cover"
-            style += "\n<img src=\"data:image/jpeg;base64," + base64img + "\" alt=\"\">"
+            style += "\n<img src=\"data:image/jpeg;base64," + base64img +
+                "\" alt=\"\">"
         # Local gif files
         elif slide["bg"].lower().endswith(".gif"):
             with open(slide["bg"], 'rb') as f:
                 imgbin = f.read()
             base64img = base64.b64encode(imgbin).decode("utf-8")
             slide["class"] = slide.get("class", "") + " cover"
-            style += "\n<img src=\"data:image/gif;base64," + base64img + "\" alt=\"\">"
+            style += "\n<img src=\"data:image/gif;base64," + base64img +
+                "\" alt=\"\">"
     # Images from the internet
     elif slide["bg"].lower().startswith("http"):
         imgurl = urlopen(slide["bg"])
@@ -104,13 +116,17 @@ def setSlideBackground(slide, style):
         imgbin = imgurl.read()
         base64img = base64.b64encode(imgbin).decode("utf-8")
         slide["class"] = slide.get("class", "") + " cover"
-        style += "\n<img src=\"data:" + imgtype + ";base64," + base64img + "\" alt=\"\">"
+        style += "\n<img src=\"data:" + imgtype + ";base64," + base64img +
+            "\" alt=\"\">"
     return (slide, style)
         
 def main():
-    parser = argparse.ArgumentParser(description='A simple self-contained slideshow generator.')
-    parser.add_argument('infile', nargs='?', type=argparse.FileType('r'), default=sys.stdin)
-    parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'), default=sys.stdout)
+    parser = argparse.ArgumentParser(
+        description='A simple self-contained slideshow generator.')
+    parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
+        default=sys.stdin)
+    parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'),
+        default=sys.stdout)
     args = parser.parse_args()
 
     metadata, slides = parseFile(args.infile)
@@ -126,10 +142,36 @@ def main():
     htmltemplate = htmltemplate.replace("%slides%", slideshtml)
     args.outfile.write(htmltemplate)
 
-############# HTML METHODS FOLLOW (REALLY BIG TEMPLATE STRING) ###############
+############## HTML METHODS FOLLOW (REALLY BIG TEMPLATE STRING) ##############
 
 def isWebColor(color):
-    colors = ["aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black", "blanchedalmond", "blue", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "fuchsia", "gainsboro", "ghostwhite", "gold", "goldenrod", "gray", "green", "greenyellow", "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgray", "lightgreen", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightsteelblue", "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "silver", "skyblue", "slateblue", "slategray", "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato", "turquoise", "violet", "wheat", "white", "whitesmoke", "yellow", "yellowgreen"]
+    colors = ["aliceblue", "antiquewhite", "aqua", "aquamarine", "azure",
+    "beige", "bisque", "black", "blanchedalmond", "blue", "blueviolet",
+    "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral",
+    "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan",
+    "darkgoldenrod", "darkgray", "darkgreen", "darkkhaki", "darkmagenta",
+    "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon",
+    "darkseagreen", "darkslateblue", "darkslategray", "darkturquoise",
+    "darkviolet", "deeppink", "deepskyblue", "dimgray", "dodgerblue",
+    "firebrick", "floralwhite", "forestgreen", "fuchsia", "gainsboro",
+    "ghostwhite", "gold", "goldenrod", "gray", "green", "greenyellow",
+    "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender",
+    "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral",
+    "lightcyan", "lightgoldenrodyellow", "lightgray", "lightgreen",
+    "lightpink", "lightsalmon", "lightseagreen", "lightskyblue",
+    "lightslategray", "lightsteelblue", "lightyellow", "lime", "limegreen",
+    "linen", "magenta", "maroon", "mediumaquamarine", "mediumblue",
+    "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue",
+    "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue",
+    "mintcream", "mistyrose", "moccasin", "navajowhite", "navy", "oldlace",
+    "olive", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod",
+    "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff",
+    "peru", "pink", "plum", "powderblue", "purple", "red", "rosybrown",
+    "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell",
+    "sienna", "silver", "skyblue", "slateblue", "slategray", "snow",
+    "springgreen", "steelblue", "tan", "teal", "thistle", "tomato",
+    "turquoise", "violet", "wheat", "white", "whitesmoke", "yellow",
+    "yellowgreen"]
     if color.lower() in colors:
         return True
     return False
