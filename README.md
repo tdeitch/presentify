@@ -4,6 +4,8 @@ Presentify
 A simple, self-contained slideshow generator
 
 Presentify is a Python program that reads Markdown files and produces completely self-contained HTML slideshows. It embeds images and fonts so you don't have to worry about flaky Internet connections or missing files. It even works offline! 
+[Check out the demo presentation](http://presentify.neocities.org)
+
 Install
 =======
 
