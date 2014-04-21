@@ -53,18 +53,19 @@ def generateSlideHTML(slides):
             slide, style = setSlideBackground(slide, style)
         if "color" in slide:
             slide, style = setSlideTextColor(slide, style)
-        slide["html"] = "\n<section class=\"slide " + slide.get("class", "") +
-            "\"><div>\n" + markdown.markdown(slide.get("text", "")) + style +
+        slide["html"] = "\n<section class=\"slide " + \
+            slide.get("class", "") + "\"><div>\n" + \
+            markdown.markdown(slide.get("text", "")) + style + \
             "\n</div></section>"
     return slides
 
 def setSlideTextColor(slide, style):
     if isWebColor(slide["color"]):
-        style += "\n<style>.color" + slide["color"] + ">div>h1,.color" +
-            slide["color"] + ">div>h2,.color" + slide["color"] +
-            ">div>h3,.color" + slide["color"] + ">div>h4,.color" +
-            slide["color"] + ">div>h5,.color" + slide["color"] +
-            ">div>h6,.color" + slide["color"] + ">div{color: " +
+        style += "\n<style>.color" + slide["color"] + ">div>h1,.color" + \
+            slide["color"] + ">div>h2,.color" + slide["color"] + \
+            ">div>h3,.color" + slide["color"] + ">div>h4,.color" + \
+            slide["color"] + ">div>h5,.color" + slide["color"] + \
+            ">div>h6,.color" + slide["color"] + ">div{color: " + \
             slide["color"] + ";}</style>"
         slide["class"] = slide.get("class", "") + " color" + slide["color"]
     return (slide, style)
@@ -72,8 +73,8 @@ def setSlideTextColor(slide, style):
 def setSlideBackground(slide, style):
     # Web colors
     if isWebColor(slide["bg"]):
-        style += "\n<style>.bg" + slide["bg"] + "{background-color: " + slide["bg"]
-            + ";}</style>"
+        style += "\n<style>.bg" + slide["bg"] + "{background-color: " + \
+            slide["bg"] + ";}</style>"
         slide["class"] = slide.get("class", "") + " bg" + slide["bg"]
     # Local images
     elif os.path.exists(slide["bg"]):
@@ -83,7 +84,7 @@ def setSlideBackground(slide, style):
                 imgbin = f.read()
             base64img = base64.b64encode(imgbin).decode("utf-8")
             slide["class"] = slide.get("class", "") + " cover"
-            style += "\n<img src=\"data:image/png;base64," + base64img +
+            style += "\n<img src=\"data:image/png;base64," + base64img + \
                 "\" alt=\"\">"
         # Local jpg files
         elif (slide["bg"].lower().endswith(".jpg") or
@@ -92,7 +93,7 @@ def setSlideBackground(slide, style):
                 imgbin = f.read()
             base64img = base64.b64encode(imgbin).decode("utf-8")
             slide["class"] = slide.get("class", "") + " cover"
-            style += "\n<img src=\"data:image/jpeg;base64," + base64img +
+            style += "\n<img src=\"data:image/jpeg;base64," + base64img + \
                 "\" alt=\"\">"
         # Local gif files
         elif slide["bg"].lower().endswith(".gif"):
@@ -100,7 +101,7 @@ def setSlideBackground(slide, style):
                 imgbin = f.read()
             base64img = base64.b64encode(imgbin).decode("utf-8")
             slide["class"] = slide.get("class", "") + " cover"
-            style += "\n<img src=\"data:image/gif;base64," + base64img +
+            style += "\n<img src=\"data:image/gif;base64," + base64img + \
                 "\" alt=\"\">"
     # Images from the internet
     elif slide["bg"].lower().startswith("http"):
@@ -116,7 +117,7 @@ def setSlideBackground(slide, style):
         imgbin = imgurl.read()
         base64img = base64.b64encode(imgbin).decode("utf-8")
         slide["class"] = slide.get("class", "") + " cover"
-        style += "\n<img src=\"data:" + imgtype + ";base64," + base64img +
+        style += "\n<img src=\"data:" + imgtype + ";base64," + base64img + \
             "\" alt=\"\">"
     return (slide, style)
         
